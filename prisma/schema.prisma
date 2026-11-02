@@ -1,0 +1,97 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Владелец визитки. Модель допускает несколько профилей (slug уникален),
+/// но API по умолчанию отдаёт основной профиль.
+model Profile {
+  id          Int          @id @default(autoincrement())
+  slug        String       @unique
+  name        String
+  title       String
+  description String
+  location    String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  links       Link[]
+  skills      Skill[]
+  experience  Experience[]
+  projects    Project[]
+}
+
+model Link {
+  id        Int     @id @default(autoincrement())
+  label     String
+  url       String
+  position  Int     @default(0)
+  profileId Int
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+}
+
+enum SkillCategory {
+  LANGUAGE
+  FRONTEND
+  BACKEND
+  DATABASE
+  DEVOPS
+  AI
+  PRACTICE
+}
+
+model Skill {
+  id        Int           @id @default(autoincrement())
+  name      String
+  category  SkillCategory
+  position  Int           @default(0)
+  profileId Int
+  profile   Profile       @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@unique([profileId, name])
+  @@index([profileId, category])
+}
+
+model Experience {
+  id           Int           @id @default(autoincrement())
+  company      String
+  position     String
+  startDate    DateTime      @db.Date
+  endDate      DateTime?     @db.Date
+  summary      String?
+  profileId    Int
+  profile      Profile       @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  achievements Achievement[]
+
+  @@index([profileId, startDate])
+}
+
+model Achievement {
+  id           Int        @id @default(autoincrement())
+  text         String
+  position     Int        @default(0)
+  experienceId Int
+  experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+
+  @@index([experienceId])
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  url         String?
+  repoUrl     String?
+  stack       String[]
+  position    Int      @default(0)
+  profileId   Int
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+}

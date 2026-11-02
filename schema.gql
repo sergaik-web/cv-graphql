@@ -1,0 +1,91 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""Достижение в рамках места работы"""
+type AchievementModel {
+  id: ID!
+  text: String!
+}
+
+"""Место работы"""
+type ExperienceModel {
+  achievements: [AchievementModel!]!
+  company: String!
+
+  """Длительность в полных месяцах"""
+  durationMonths: Int!
+
+  """Дата окончания; null — работаю сейчас"""
+  endDate: String
+  id: ID!
+  isCurrent: Boolean!
+
+  """Период для отображения, например «12.2023 — 06.2025»"""
+  period: String!
+  position: String!
+
+  """Дата начала, ISO 8601 (YYYY-MM-DD)"""
+  startDate: String!
+  summary: String
+}
+
+"""Ссылка на профессиональный ресурс"""
+type LinkModel {
+  id: ID!
+  label: String!
+  url: String!
+}
+
+"""Профиль специалиста"""
+type ProfileModel {
+  description: String!
+
+  """Опыт работы, от новых к старым"""
+  experience: [ExperienceModel!]!
+  id: ID!
+  links: [LinkModel!]!
+  location: String
+  name: String!
+  projects: [ProjectModel!]!
+  skills(category: SkillCategory): [SkillModel!]!
+  slug: String!
+  title: String!
+}
+
+"""Проект"""
+type ProjectModel {
+  description: String!
+  id: ID!
+  name: String!
+
+  """Ссылка на репозиторий"""
+  repoUrl: String
+  stack: [String!]!
+
+  """Ссылка на работающий проект"""
+  url: String
+}
+
+type Query {
+  """Профиль специалиста. Без аргумента — основной профиль визитки."""
+  profile(slug: String): ProfileModel
+}
+
+"""Группа навыка"""
+enum SkillCategory {
+  AI
+  BACKEND
+  DATABASE
+  DEVOPS
+  FRONTEND
+  LANGUAGE
+  PRACTICE
+}
+
+"""Навык"""
+type SkillModel {
+  category: SkillCategory!
+  id: ID!
+  name: String!
+}
