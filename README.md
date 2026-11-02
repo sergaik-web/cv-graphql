@@ -3,6 +3,9 @@
 Backend-приложение, которое через GraphQL отдаёт информацию обо мне: профиль, навыки,
 опыт работы с достижениями и проекты.
 
+**Демо (Apollo Sandbox):** https://cv-graphql-arv2.onrender.com/graphql
+— бесплатный инстанс Render засыпает без трафика, первый запрос после паузы может идти до минуты.
+
 **Стек:** TypeScript · Node.js 22 · NestJS 11 · GraphQL (Apollo Server 5, code-first) ·
 Prisma 6 · PostgreSQL 17 · Docker · DataLoader.
 
@@ -132,5 +135,7 @@ ts-node в production-образ не попадает.
 
 ## Деплой
 
-В репозитории есть `render.yaml` (Render Blueprint): PostgreSQL и веб-сервис из
-Dockerfile, миграции и сид выполняются при старте контейнера.
+Развёрнуто на Render: веб-сервис из этого Dockerfile + управляемый PostgreSQL в одном
+регионе (Frankfurt), health check на `/health`. Миграции и сид выполняются при старте
+контейнера, поэтому деплой не требует ручных шагов. В репозитории также есть
+`render.yaml` (Render Blueprint), который поднимает ту же конфигурацию одной кнопкой.

@@ -101,6 +101,7 @@ export const PROFILE_SEED: SeedProfile = {
     {
       name: 'CV GraphQL API',
       description: 'Эта визитка: GraphQL API на NestJS, Prisma и PostgreSQL с батчингом вложенных запросов через DataLoader.',
+      url: 'https://cv-graphql-arv2.onrender.com/graphql',
       repoUrl: 'https://github.com/sergaik-web/cv-graphql',
       stack: ['TypeScript', 'NestJS', 'GraphQL', 'Prisma', 'PostgreSQL', 'Docker'],
     },
